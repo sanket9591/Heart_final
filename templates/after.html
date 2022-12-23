@@ -1,0 +1,135 @@
+<html>
+<head>
+    <style>
+        table,th,td{
+            border: 1px double black;
+            width:20%;
+        }
+        .main{
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+        }
+        .main1{
+            width: 400px;
+            height: 300px;
+            background: black;
+            margin-right: 30px;
+        }
+
+        .main1 img{
+            width: 550px;
+            height: 400px;
+        }
+        .card{
+            width: 500px;
+            height: 400px;
+            box-shadow: -1px 4px 38px 0px rgba(0,0,0,0.75);
+            margin-top: 50px;
+            border: 3px solid whitesmoke;
+            padding: 5px 10px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: #fff;
+        }
+        .generate{
+            color: #fff;
+            width: 150px;
+            height: 35px;
+            background: rgb(19, 110, 185);
+            border: 0px;
+            border-radius: 10px;
+        }
+        body{
+            background: linear-gradient(to right, #8360c3, #2ebf91);
+        }
+        a{
+            color: #fff;
+            text-decoration: none;
+            font-size: 30px;
+        }
+    </style>
+    <script src=
+        "https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js">
+            </script>
+</head>
+<body>
+    <a href='/'>&larr; home page</a>
+    <div class="main">
+        
+        <div>
+            <div class="card" id="makepdf">
+                <center>
+            
+                    <h1>  PREDICTION :  </h1>
+                
+                {%if data == 0%}
+                <h1>Person may not have heart disease</h1>  
+                
+                {%else%}
+                <h2>Person may have heart disease</h2>
+                <div>
+                <h3>Values of hyper parameters are :</h3>
+                <table>
+                    <th>Parameter</th>
+                    <th>value</th>
+                    <tr>
+                        <td>age: </td>
+                        <td>{{ arrayData[0] }}</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Resting Blood Pressure: </td>
+                        <td>{{arrayData[3]}}</td>
+                    </tr>
+                    <tr>
+                        <td>chol:</td>
+                        <td>{{arrayData[4]}}</td>
+                    </tr>
+                    <tr>
+                        <td>thalach:</td>
+                        <td>{{arrayData[7]}}</td>
+                    </tr>
+                 
+                </table>
+                    {%if (arrayData[3]|int >=94) and (arrayData[3]|int<110) %}
+                    <h3 color=#ffffcc>level of heart disease : Low</h3>
+                    {% elif (arrayData[3]|int >=110) and (arrayData[3]|int<=140) %}
+                    <h3 color=#ffff00>level of heart disease: Moderate</h3>
+                    {%else%}
+                    <h3 color=#ff0000>level of heart disease: High</h3>
+                    {%endif%}
+                    <input type="button" id="bat" class="btn btn-primary generate" style="margin-left: 0px; "value="Generate pdf" />
+             
+                </div>
+                
+                <br>
+            </div>
+        </div>
+        <div class="main1">
+            <img src="{{url_for('static', filename='medicine.png')}}">
+        </div>
+      
+    </div>
+    {%endif%}
+
+        <br><br>
+       
+
+    
+    <script>
+        var button = document.getElementById("bat");
+        var makepdf = document.getElementById("makepdf");
+  
+        button.addEventListener("click", function () {
+            html2pdf().from(makepdf).save();
+        });
+    </script>
+                             
+
+</body>
+
+</html>
